@@ -1,0 +1,45 @@
+head
+  
+    title #{title}
+    |   
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    |   
+    link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+    |   
+    link(rel='stylesheet', href='/stylesheets/kanban.css')
+  body
+    .topcorner
+       a(href='/') Logout
+    form(action='/addscrum', method='post')
+      h1  #{name}    
+      fieldset
+        label(for='storyId') Story ID:
+        |       
+        input#name(type='text', name='storyId', value='#{story[0].storyId}')
+        
+        label(for='storyTitle') Story Title:
+        
+        input(type='text', name='storyTitle', value='#{story[0].storyTitle}')
+        
+        label(for='storyDescription') Story Description:
+        
+        input(type='text', name='storyDescription', value='#{story[0].storyDescription}')
+
+        label(for='totalHours') Total Hours:
+        
+        input(type='text', name='totalHours', value='#{story[0].totalHours}')
+
+        label(for='remainingHours') Remaining Hours:
+        
+        input(type='text', name='remainingHours', value='#{story[0].remainingHours}')
+        
+        label(for='assignedTo') Assigned To:
+        
+        input(type='text', name='assignedTo', value='#{story[0].assignedTo}')
+        
+        input#name(type='hidden', name='userid',value='#{userid}')
+        
+      button(type='submit', name='story', value='#{name}') #{name}
+      
+        
+       

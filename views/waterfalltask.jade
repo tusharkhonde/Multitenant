@@ -1,0 +1,57 @@
+head
+  
+    title #{title}
+    |   
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    |   
+    link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+    |   
+    link(rel='stylesheet', href='/stylesheets/kanban.css')
+  body
+    .topcorner
+       a(href='/') Logout
+    form(action='/addwaterfall', method='post')
+      h1  #{name}    
+      fieldset
+        
+        label(for='taskId') Task ID:
+        |       
+        input#name(type='text', name='taskId', value='#{t[0].taskId}')
+        
+        label(for='taskName') Task Name:
+        
+        input(type='text', name='taskName', value='#{t[0].taskName}')
+        
+        label(for='taskDescription') Task Description:
+        
+        input(type='text', name='taskDescription', value='#{t[0].taskDescription}')
+        
+        label(for='startDate') Start Date:
+        
+        input(type='date', name='startDate', value='#{t[0].startDate}')
+        
+        label(for='finishDate') Finish Date:
+        
+        input(type='date', name='finishDate', value='#{t[0].finishDate}')
+        
+        fieldset
+        label(for='task category') Task Status:
+        |       
+        select#job(name='taskType')
+          optgroup(label='Task Category' value='#{t[0].taskType}')
+            option(value='Requested') Requested
+            |           
+            option(value='In Progress') In Progress
+            |           
+            option(value='Completed') Completed
+            
+        
+        label(for='assignedTo') Assigned To:
+        
+        input(type='text', name='assignedTo', value='#{t[0].assignedTo}')
+        
+        input#name(type='hidden', name='userid',value='#{userid}')
+      button(type='submit', name='task' value='#{name}') #{name}
+      
+        
+       

@@ -1,0 +1,71 @@
+head
+  title #{title}
+  |   
+  link(rel='stylesheet', href='/stylesheets/style.css')
+  |   
+  link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+  |   
+  link(rel='stylesheet', href='/stylesheets/new.css')
+  .topcorner
+     a(href='/') Logout
+  .header.h1
+   h1 Waterfall Project Activity 
+  
+  .nav
+   form(action='/updatewaterfall', method='post')
+    label(for='cardId') Enter Task ID (Update/Delete)
+        |       
+        input#name(type='text', name='taskId')
+        input#name(type='hidden', name='userid', value='#{user}')
+    button(type='submit' name='update' value='update' ) Update Task 
+    br
+    button(type='submit' name='update' value='delete') Delete Task  
+    .col.a
+      a(href='/#{user}'+'/addtask', title='addtask') Add Task
+    .col.a 
+      a(href='/#{user}'+'/projectstatus', title='projectstatus') Project Status
+  
+  .section
+   form()
+    center      
+     table.pure-table.pure-table-horizontal.center
+       thead
+        tr
+         th Task Id
+         |         
+         th Task Name 
+         
+         th Task Description
+         
+         th Start Date
+         
+         th End Date
+         
+         th Task Status
+         
+         th Owner
+       
+       tbody 
+        -each item in docs
+         tr(class=(item % 2 == 0) ? 'odd' : 'even')
+           td #{item.taskId}
+           
+           td #{item.taskName}
+           
+           td #{item.taskDescription}
+           
+           td #{item.startDate}
+           
+           td #{item.finishDate}
+           
+           td #{item.taskType}
+           
+           td #{item.assignedTo}     
+          
+                     
+        
+              
+              
+             
+             
+            

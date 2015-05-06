@@ -1,0 +1,62 @@
+head
+  title #{title}
+  |   
+  link(rel='stylesheet', href='/stylesheets/style.css')
+  |   
+  link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+  |   
+  link(rel='stylesheet', href='/stylesheets/new.css')
+  .topcorner
+     a(href='/') Logout
+  .header.h1
+   h1 Scrum Project Activity 
+  
+  .nav
+   form(action='/updatescrum', method='post')
+    label(for='cardId') Enter Story ID (Update/Delete):
+        |       
+        input#name(type='text', name='storyId')
+        input#name(type='hidden', name='userid', value='#{user}')
+    button(type='submit' name='update' value='update' ) Update Story 
+    br
+    button(type='submit' name='update' value='delete') Delete Story  
+    .col.a
+      a(href='/#{user}'+'/addstory', title='addstory') Add Story
+    .col.a 
+      a(href='/#{user}'+'/projectstatus', title='projectstatus') Project Status
+  
+  .section
+   form()
+    center      
+     table.pure-table.pure-table-horizontal.center
+      thead
+        tr
+         th Story Id
+         |         
+         th Story Title
+         
+         th Story Description
+         
+         th Total Hours
+         
+         th Remaining Hours
+         
+         th Assigned To
+       
+      tbody 
+       -each item, i in docs
+         tr(class=(i % 2 == 0) ? 'odd' : 'even')
+          td #{item.storyId}
+          td #{item.storyTitle}
+          td #{item.storyDescription}
+          td #{item.totalHours}
+          td #{item.remainingHours}
+          td #{item.assignedTo}   
+          
+                     
+        
+              
+              
+             
+             
+            

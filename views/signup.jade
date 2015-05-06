@@ -1,0 +1,46 @@
+head
+  
+    title MultiTenant Saas CMPE 281 Sign Up Form 
+    |   
+    link(rel='stylesheet', href='stylesheets/style.css')
+    |   
+    link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+    |   
+    link(rel='stylesheet', href='stylesheets/style.css')
+  body
+    form(action='signup', method='post')
+      h1 Sign Up
+      |     
+      fieldset
+        legend
+          
+        |       
+        label(for='userid') User ID:
+        |       
+        input#name(type='text', name='userid')
+        |       
+        label(for='firstname') First Name:
+               
+        input#name(type='text', name='firstName')
+        
+        label(for='lastname') Last Name:
+               
+        input#name(type='text', name='lastName')
+               
+        label(for='password') Password:
+               
+        input#password(type='password', name='password')
+      |     
+           
+      fieldset
+        label(for='software model') Software Development Model:
+        |       
+        select#job(name='tenantType')
+          optgroup(label='Software Development Model')
+            option(value='waterfall') Waterfall
+            |           
+            option(value='kanban') Kanban
+            |           
+            option(value='scrum') Scrum
+        |       
+        button(type='submit') Sign Up

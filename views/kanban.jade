@@ -1,0 +1,62 @@
+head
+  title #{title}
+  |   
+  link(rel='stylesheet', href='/stylesheets/style.css')
+  |   
+  link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+  |   
+  link(rel='stylesheet', href='/stylesheets/new.css')
+  .topcorner
+     a(href='/') Logout
+  .header.h1
+   h1 Kanban Project Activity 
+   
+  .nav
+   form(action='/updatekanban', method='post')
+    
+    label(for='cardId') Enter Card ID (Update/Delete)
+        |       
+        input#name(type='text', name='cardId')
+        
+        input#name(type='hidden', name='userid', value='#{user}')
+    button(type='submit' name='update' value='update' ) Update Card 
+    br
+    button(type='submit' name='update' value='delete') Delete Card   
+    .col.a
+      a(href='/#{user}'+'/addcard', title='addcard') Add Card
+    .col.a 
+      a(href='/#{user}'+'/projectstatus', title='projectstatus') Project Status
+  
+  .section
+   form()
+      center      
+        .divCell Backlog
+        
+        .divCell To Do
+        
+        .divCell In Progress
+        
+        .divCell In Review
+       
+      -each j in docs
+            -if(j.cardType=="Backlog")
+             .divRow
+              .div-1a (#{j.cardId}) #{j.cardName}
+            -else if(j.cardType=="To Do")
+              .divRow
+               .div-1b (#{j.cardId}) #{j.cardName}
+             -if(j.cardType=="In Progress")
+               .divRow 
+                .div-1c (#{j.cardId}) #{j.cardName}
+             -if(j.cardType=="In Review")
+               .divRow 
+                .div-1d (#{j.cardId}) #{j.cardName}
+                          
+          
+                     
+        
+              
+              
+             
+             
+            

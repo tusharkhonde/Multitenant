@@ -1,0 +1,36 @@
+head
+  
+    title #{title}
+    |   
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    |   
+    link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+    |   
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    
+  body
+    form(action='projectcreate', method='post')
+      h1  Create Project  
+      fieldset
+        label(for='projectname') Project Name:
+               
+        input#name(type='text', name='projectname')
+        
+        label(for='startdate') Start Date:
+        
+        input(type='date', name='startdate')
+        
+        label(for='finishdate') Finish Date:
+        
+        input(type='date', name='finishdate')
+        
+        if(tenant=='scrum')
+          label(for='burndown') Burndown Velocity:
+          input(type='text', name='burndown')
+          
+        input(type='hidden', name='userid',value='#{userid}')
+        input(type='hidden', name='tenantType',value='#{tenant}')
+      button(type='submit') Create Project
+      
+        
+       

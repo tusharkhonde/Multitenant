@@ -1,0 +1,51 @@
+head
+  
+    title #{title}
+    |   
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    |   
+    link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+    |   
+    link(rel='stylesheet', href='/stylesheets/kanban.css')
+  body
+    .topcorner
+       a(href='/') Logout
+    form(action='/addkanban', method='post')
+      h1 #{name}  
+      fieldset
+        label(for='cardId') Card ID:
+        |       
+        input#name(type='text', name='cardId', value='#{card[0].cardId}')
+        
+        label(for='cardName') Card Name:
+        |       
+        input#name(type='text', name='cardName', value='#{card[0].cardName}')
+        
+        label(for='cardDescription') Card Description:
+        
+        input(type='text', name='cardDescription', value='#{card[0].cardDescription}')
+        
+        label(for='assignedTo') Owner:
+        
+        input(type='text', name='assignedTo', value='#{card[0].assignedTo}')
+        
+        
+        input#name(type='hidden', name='userid',value='#{userid}')
+      fieldset
+        label(for='card category') Card Status:
+        |       
+        select#job(name='cardType')
+          optgroup(label='Card Category')
+            option(value='Backlog') Backlog
+            |           
+            option(value='To Do') To Do
+            |           
+            option(value='In Progress') In progress
+            |           
+            option(value='In Review') In Review
+        
+      button(type='submit', name='card' value='#{name}') #{name}
+     
+      
+        
+       

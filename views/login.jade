@@ -1,0 +1,30 @@
+head
+  
+    title #{title}
+    |   
+    link(rel='stylesheet', href='stylesheets/style.css')
+    |   
+    link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+    |   
+    link(rel='stylesheet', href='stylesheets/style.css')
+  body
+    form(action='login', method='post')
+      h1 MultiTenant Saas CMPE 281
+      h2 #{signup}
+      h3 #{error}
+      |     
+      fieldset
+        
+        label(for='username') Username:
+        |       
+        input#name(type='text', name='userid')
+        |       
+        label(for='password') Password:
+        |       
+        input#password(type='password', name='password')
+      |     
+      button(type='submit') Login
+      .col
+            a(href='signup', title='Register') Register
+        
+       

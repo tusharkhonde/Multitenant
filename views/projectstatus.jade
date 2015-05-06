@@ -1,0 +1,35 @@
+head
+  
+    title #{title}
+    |   
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    |   
+    link(href='http://fonts.googleapis.com/css?family=Nunito:400,300', rel='stylesheet', type='text/css')
+    |   
+    link(rel='stylesheet', href='/stylesheets/kanban.css')
+  body
+  .topcorner
+       a(href='/') Logout
+  .topleft
+         a(href='/#{userid}'+'/login') Dashboard
+      center
+        h1 Project Status
+        |   
+        table.pure-table.pure-table-horizontal
+          thead
+            tr
+              th Project Name 
+              
+              th Project Tenant Type 
+                       
+              th Project Status #{field}
+          |     
+          tbody
+            tr
+              td #{field1}
+              |         
+              td #{field2}
+              
+              td #{field3}                      
+              
+            
