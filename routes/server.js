@@ -76,7 +76,7 @@ exports.signup = app.post('/signup', function(req, res) {
 					req.body.fields = ["Card Id","Card Name", "Card Description", "Assigned To","Card Type"];
 					break;
 				case 'waterfall':
-					req.body.fields = ["Task ID","Task Name", "Task Description","Start Date", "Finish Date", "Assigned To"];
+					req.body.fields = ["Task ID","Task Name", "Task Description","Start Date", "Finish Date", "Task Type","Assigned To"];
 					break;
 				case 'scrum':
 					req.body.fields = ["Story ID", "Story Title", "Story Description", "Total Hours","Remaining Hours","Assigned To"];
@@ -132,12 +132,64 @@ app.get('/:userid/login', function(req, res) {
 
 //Redirect to Project Status Page
 app.get('/:userid/projectstatus', function(req, res) {
-	
-  db.collection('projects').findOne({userid : req.params.userid}, function(err, projects) {
-	  res.render('projectstatus', { title: 'Welcome' ,userid:req.params.userid});
-  });
-});
+ 
+	db.collection("users").find({userid : req.params.userid}, {"tenantType": 1}, function(err, users) {
+		
+		if(users[0].tenantType == "waterfall") {
+			var a = {};
+			db.collection("projects").aggregate( { $match : { "tasks.taskType": "Requested" } }, { $unwind : "$tasks" }, { $match : { "tasks.taskType" : "Requested" } } , function(err, tasks) {
+				a["Requested"] = tasks.length;
+				db.collection("projects").aggregate( { $match : { "tasks.taskType": "In Progress" } }, { $unwind : "$tasks" }, { $match : { "tasks.taskType" : "In Progress" } } , function(err, tasks) {
+					a["In Progress"] = tasks.length;
+					db.collection("projects").aggregate( { $match : { "tasks.taskType": "Completed" } }, { $unwind : "$tasks" }, { $match : { "tasks.taskType" : "Completed" } } , function(err, tasks) {
+						a["Completed"] = tasks.length;
+						var total = a["Requested"] + a["In Progress"] + a["Completed"];
+						a["Requested Percentage"] = ((a["Requested"] / total) * 100);
+						a["In Progress Percentage"] = ((a["In Progress"] / total) * 100);
+						a["Completed Percentage"] = ((a["Completed"] / total) * 100);
+						//res.json(a);
+						res.render('projectstatus',{title:'Waterfall Project Status',tenant:'waterfall',a:a["Requested Percentage"],b:a["In Progress Percentage"],c:a["Completed Percentage"]});
+					});
+				});
+			});
+		} else if(users[0].tenantType == "scrum") {
+			console.log("1");
+			db.collection("projects").find({userid : req.params.userid, projectName: req.params.project}, function(err, projects) {
+				
+			});
+		} else if(users[0].tenantType == "kanban") {
+			var a = [];
+			var flag=[];
+			db.collection("projects").aggregate( { $match : { "cards.cardType": "To Do" } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "In Review" } } , function(err, cards) {
+				a[0] = cards.length;
+				db.collection("projects").aggregate( { $match : { "cards.cardType": "In Review" } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "In Review" } } , function(err, cards) {
+					a[1] = cards.length;
+					db.collection("projects").aggregate( { $match : { "cards.cardType": "In Progress" } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "In Progress" } } , function(err, cards) {
+						a[2] = cards.length;
+						db.collection("projects").aggregate( { $match : { "cards.cardType": "Completed" } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "Completed" } } , function(err, cards) {
+							a[3] = cards.length;
+							console.log(a);
+							for(var i=0;i<a.length;i++){
+								 console.log(a[i]);
+								 if(a[i]<3) {
+									 flag[i]='Below Threshold';
+								 } else {
+									 flag[i]='Above Threshold';
+								 }
+							 } 
+							res.render('projectstatus',{title:'Kanban Project Status',tenant:'kanban',flag:flag });
+						});
+					});
+				});
+			});
+		} 
+		else {
+			var string = encodeURIComponent(req.params.userid); 
+			res.redirect('/'+string+'/projectstatus');
+		}
+	});
 
+});
 
 
 // **********GET request to Add Kanban Card*******

@@ -30,25 +30,25 @@ head
   .section
    form()
       center      
-        .divCell Backlog
-        
         .divCell To Do
         
-        .divCell In Progress
+        .divCell In Progrss
         
         .divCell In Review
+        
+        .divCell Completed
        
       -each j in docs
-            -if(j.cardType=="Backlog")
+            -if(j.cardType=="To Do")
              .divRow
               .div-1a (#{j.cardId}) #{j.cardName}
-            -else if(j.cardType=="To Do")
+            -else if(j.cardType=="In Progress")
               .divRow
                .div-1b (#{j.cardId}) #{j.cardName}
-             -if(j.cardType=="In Progress")
+             -if(j.cardType=="In Review")
                .divRow 
                 .div-1c (#{j.cardId}) #{j.cardName}
-             -if(j.cardType=="In Review")
+             -if(j.cardType=="Completed")
                .divRow 
                 .div-1d (#{j.cardId}) #{j.cardName}
                           

@@ -13,23 +13,63 @@ head
   .topleft
          a(href='/#{userid}'+'/login') Dashboard
       center
-        h1 Project Status
+        h1 #{title}
         |   
-        table.pure-table.pure-table-horizontal
-          thead
-            tr
-              th Project Name 
+    -if(tenant=='kanban')
+      form()
+       table.pure-table.pure-table-horizontal
+         thead
+           tr
+              th To Do 
               
-              th Project Tenant Type 
+              th In Progress 
                        
-              th Project Status #{field}
+              th In Review
+              
+              th Completed
           |     
-          tbody
+         tbody
+             tr
+               td #{flag[0]}
+               |         
+               td #{flag[1]}
+              
+               td #{flag[2]}
+               
+               td #{flag[3]}                      
+     if(tenant=='waterfall')
+       form() 
+        table.pure-table.pure-table-horizontal
+         thead
             tr
-              td #{field1}
-              |         
-              td #{field2}
+              th Requested  
               
-              td #{field3}                      
+              th In Progress 
+                       
+              th Completed
+         |     
+         tbody
+             tr
+               td #{a} 
+               |         
+               td #{b}
               
+               td #{c}
+               
+     if(tenant=='scrum')          
+       form() 
+        table.pure-table.pure-table-horizontal
+         thead
+            tr
+              th Total Hours  
+              
+              th Estimated Date 
+             
+         |     
+         tbody
+             tr
+               td  
+               |         
+               td 
+                           
             
