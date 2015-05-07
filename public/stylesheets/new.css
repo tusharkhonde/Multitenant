@@ -149,6 +149,7 @@ a, a:link, a:visited, a:active, a:hover {border:0!important;text-decoration:none
     .divRow
     {
        display:table-row;
+       background-color:#27ae60;
     }
 
     .divCell
@@ -159,7 +160,26 @@ a, a:link, a:visited, a:active, a:hover {border:0!important;text-decoration:none
         height:10%;
         background-color:#27ae60;
      }
+     .divCells
+    {
+        float:left;/*fix for  buggy browsers*/
+        display:table-cell;
+        width:25%;
+        height:10%;
+        background-color:#27ae60;
+        font-size: 275%;
+        font-family: 'Covered By Your Grace', cursive;
+     }
 
+.div-1e {
+    display:table-cell;
+    left:0px;
+    width:50%;
+    height: 30px;
+    margin: 0 1.5% 24px 1.5%;
+    position:relative;
+    background-color:#27ae60; 
+}
 .div-1a {
     display:table-cell;
     left:0px;

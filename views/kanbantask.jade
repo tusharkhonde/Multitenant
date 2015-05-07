@@ -36,13 +36,13 @@ head
         |       
         select#job(name='cardType')
           optgroup(label='Card Category')
-            option(value='Backlog') Backlog
-            |           
             option(value='To Do') To Do
             |           
-            option(value='In Progress') In progress
+            option(value='In Progress') In Progress
             |           
             option(value='In Review') In Review
+            |           
+            option(value='Completed') Completed
         
       button(type='submit', name='card' value='#{name}') #{name}
      

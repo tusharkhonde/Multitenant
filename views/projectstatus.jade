@@ -38,7 +38,9 @@ head
                
                td #{flag[3]}                      
      if(tenant=='waterfall')
-       form() 
+      form() 
+       .divCells 
+            .col.a Project Completed :: #{c} %       
         table.pure-table.pure-table-horizontal
          thead
             tr
@@ -55,21 +57,24 @@ head
                td #{b}
               
                td #{c}
-               
+             
      if(tenant=='scrum')          
        form() 
         table.pure-table.pure-table-horizontal
          thead
             tr
-              th Total Hours  
+              th Burndown Velocity
+              
+              th Remaining Hours  
               
               th Estimated Date 
-             
          |     
          tbody
              tr
-               td  
+               td #{c}
+               
+               td #{a} 
                |         
-               td 
+               td #{b}
                            
             

@@ -148,15 +148,30 @@ app.get('/:userid/projectstatus', function(req, res) {
 						a["In Progress Percentage"] = ((a["In Progress"] / total) * 100);
 						a["Completed Percentage"] = ((a["Completed"] / total) * 100);
 						//res.json(a);
-						res.render('projectstatus',{title:'Waterfall Project Status',tenant:'waterfall',a:a["Requested Percentage"],b:a["In Progress Percentage"],c:a["Completed Percentage"]});
+						res.render('projectstatus',{userid : req.params.userid,title:'Waterfall Project Status',tenant:'waterfall',a:a["Requested Percentage"],b:a["In Progress Percentage"],c:a["Completed Percentage"]});
 					});
 				});
 			});
 		} else if(users[0].tenantType == "scrum") {
-			console.log("1");
-			db.collection("projects").find({userid : req.params.userid, projectName: req.params.project}, function(err, projects) {
-				
-			});
+			var a = {};
+			db.collection("projects").find({userid : req.params.userid}, {"story": 1, "burndown": 1}, function(err, story) {
+				var totalHrs = 0, remainingHrs = 0, burndown = parseInt(story[0].burndown);
+				for(var i=0; i<story[0].story.length; i++) {
+					totalHrs = totalHrs + parseInt(story[0].story[i].totalHours);
+					remainingHrs = remainingHrs + parseInt(story[0].story[i].remainingHours);
+				}
+				var remainingDays = parseInt(remainingHrs / burndown) + 1;
+				var date = new Date();
+				date.setTime(date.getTime() + (remainingDays * 86400000));
+
+				a["Total Hours"] = totalHrs;
+				a["Remaining Hours"] = remainingHrs;
+				a["Remaining Days"] = remainingDays;
+				a["Estimated Completion Date"] = date;
+				//res.json(a);
+
+			res.render('projectstatus',{userid : req.params.userid,title:'Scrum Project Status',tenant:'scrum',a:a["Remaining Hours"],b:a["Estimated Completion Date"],c:burndown});
+			});	
 		} else if(users[0].tenantType == "kanban") {
 			var a = [];
 			var flag=[];
@@ -177,7 +192,7 @@ app.get('/:userid/projectstatus', function(req, res) {
 									 flag[i]='Above Threshold';
 								 }
 							 } 
-							res.render('projectstatus',{title:'Kanban Project Status',tenant:'kanban',flag:flag });
+							res.render('projectstatus',{userid : req.params.userid,title:'Kanban Project Status',tenant:'kanban',flag:flag });
 						});
 					});
 				});
