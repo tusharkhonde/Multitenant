@@ -10,6 +10,8 @@ head
   body
     .topcorner
        a(href='/') Logout
+    .topleft
+         a(href='/#{userid}'+'/login') Dashboard   
     form(action='/addscrum', method='post')
       h1  #{name}    
       fieldset
