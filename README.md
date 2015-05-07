@@ -10,7 +10,7 @@
 
 ## Developing
 
-
+### Run the App: DEBUG:kanban:server ./bin/www
 
 ### Tools
 
