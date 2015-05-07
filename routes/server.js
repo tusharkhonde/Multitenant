@@ -66,6 +66,7 @@ app.get('/signup', function(req, res) {
 // New User SignUp
 exports.signup = app.post('/signup', function(req, res) {
 	db.collection('users').find({userid : req.body.userid}, function(err, users) {
+	var tenant='tenant';
 		if( err || !users) {
 			res.send('Error');
 		} else if(users.length != 0) {
@@ -74,19 +75,23 @@ exports.signup = app.post('/signup', function(req, res) {
 			switch(req.body.tenantType) {
 				case 'kanban':
 					req.body.fields = ["Card Id","Card Name", "Card Description", "Assigned To","Card Type"];
+					tenant='kanban';
 					break;
 				case 'waterfall':
 					req.body.fields = ["Task ID","Task Name", "Task Description","Start Date", "Finish Date", "Task Type","Assigned To"];
+					tenant='waterfall';
 					break;
 				case 'scrum':
 					req.body.fields = ["Story ID", "Story Title", "Story Description", "Total Hours","Remaining Hours","Assigned To"];
+					tenant='scrum';
 					break;
 				default:
 					break;
 			}
 			db.collection('users').insert(req.body);
+			
 			db.collection('users').findOne({userid:req.body.userid},function(err,docs){
-				res.render('projectcreate',{ title: 'Welcome', userid: req.body.userid, tenant:docs.tenantType});
+				res.render('projectcreate',{ title: 'Welcome', userid: req.body.userid, tenant:tenant});
 		});
 			
 		}
@@ -132,16 +137,16 @@ app.get('/:userid/login', function(req, res) {
 
 //Redirect to Project Status Page
 app.get('/:userid/projectstatus', function(req, res) {
- 
-	db.collection("users").find({userid : req.params.userid}, {"tenantType": 1}, function(err, users) {
+     console.log(req.params.userid);
+	db.collection("users").find({userid : req.params.userid}, function(err, users) {
 		
 		if(users[0].tenantType == "waterfall") {
 			var a = {};
-			db.collection("projects").aggregate( { $match : { "tasks.taskType": "Requested" } }, { $unwind : "$tasks" }, { $match : { "tasks.taskType" : "Requested" } } , function(err, tasks) {
+			db.collection("projects").aggregate( { $match : { "tasks.taskType": "Requested" ,userid : req.params.userid} }, { $unwind : "$tasks" }, { $match : { "tasks.taskType" : "Requested" } } , function(err, tasks) {
 				a["Requested"] = tasks.length;
-				db.collection("projects").aggregate( { $match : { "tasks.taskType": "In Progress" } }, { $unwind : "$tasks" }, { $match : { "tasks.taskType" : "In Progress" } } , function(err, tasks) {
+				db.collection("projects").aggregate( { $match : { "tasks.taskType": "In Progress",userid : req.params.userid } }, { $unwind : "$tasks" }, { $match : { "tasks.taskType" : "In Progress" } } , function(err, tasks) {
 					a["In Progress"] = tasks.length;
-					db.collection("projects").aggregate( { $match : { "tasks.taskType": "Completed" } }, { $unwind : "$tasks" }, { $match : { "tasks.taskType" : "Completed" } } , function(err, tasks) {
+					db.collection("projects").aggregate( { $match : { "tasks.taskType": "Completed",userid : req.params.userid } }, { $unwind : "$tasks" }, { $match : { "tasks.taskType" : "Completed" } } , function(err, tasks) {
 						a["Completed"] = tasks.length;
 						var total = a["Requested"] + a["In Progress"] + a["Completed"];
 						a["Requested Percentage"] = ((a["Requested"] / total) * 100);
@@ -175,13 +180,13 @@ app.get('/:userid/projectstatus', function(req, res) {
 		} else if(users[0].tenantType == "kanban") {
 			var a = [];
 			var flag=[];
-			db.collection("projects").aggregate( { $match : { "cards.cardType": "To Do" } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "In Review" } } , function(err, cards) {
+			db.collection("projects").aggregate( { $match : { "cards.cardType": "To Do" ,'userid' : req.params.userid} }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "In Review" } } , function(err, cards) {
 				a[0] = cards.length;
-				db.collection("projects").aggregate( { $match : { "cards.cardType": "In Review" } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "In Review" } } , function(err, cards) {
+				db.collection("projects").aggregate( { $match : { "cards.cardType": "In Review" ,'userid' : req.params.userid} }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "In Review" } } , function(err, cards) {
 					a[1] = cards.length;
-					db.collection("projects").aggregate( { $match : { "cards.cardType": "In Progress" } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "In Progress" } } , function(err, cards) {
+					db.collection("projects").aggregate( { $match : { "cards.cardType": "In Progress",userid : req.params.userid } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "In Progress" } } , function(err, cards) {
 						a[2] = cards.length;
-						db.collection("projects").aggregate( { $match : { "cards.cardType": "Completed" } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "Completed" } } , function(err, cards) {
+						db.collection("projects").aggregate( { $match : { "cards.cardType": "Completed",userid : req.params.userid } }, { $unwind : "$cards" }, { $match : { "cards.cardType" : "Completed" } } , function(err, cards) {
 							a[3] = cards.length;
 							console.log(a);
 							for(var i=0;i<a.length;i++){
